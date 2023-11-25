@@ -1,10 +1,7 @@
 ﻿using ChickenFarmApi.DataAccess;
-using ChickenFarmApi.DataAccess.Entities;
+using ChickenFarmApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ChickenFarmApi.Controllers
 {
@@ -12,31 +9,33 @@ namespace ChickenFarmApi.Controllers
     [ApiController]
     public class EggLayingController : ControllerBase
     {
-        private readonly EggLayingContext _context;
+        private readonly EggLayingContext _dbContext;
 
         public EggLayingController(EggLayingContext context)
         {
-            _context = context;
+            _dbContext = context;
+            _dbContext.Database.EnsureCreated();
+
         }
 
         [HttpPost("{year}/{month}")]
         public async Task<ActionResult> RecordEggLaying(int year, int month, [FromBody] int eggCount)
         {
-            var record = await _context.EggLayingRecords
+            var record = await _dbContext.EggLayingRecords
                 .Where(r => r.Year == year && r.Month == month)
                 .FirstOrDefaultAsync();
 
             if (record == null)
             {
                 record = new EggLayingRecord { Year = year, Month = month, EggCount = eggCount };
-                _context.EggLayingRecords.Add(record);
+                _dbContext.EggLayingRecords.Add(record);
             }
             else
             {
                 record.EggCount = eggCount;
             }
 
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -44,7 +43,7 @@ namespace ChickenFarmApi.Controllers
         [HttpGet("{year}/{month}")]
         public async Task<ActionResult<int>> GetEggCount(int year, int month)
         {
-            var record = await _context.EggLayingRecords
+            var record = await _dbContext.EggLayingRecords
                 .Where(r => r.Year == year && r.Month == month)
                 .FirstOrDefaultAsync();
 

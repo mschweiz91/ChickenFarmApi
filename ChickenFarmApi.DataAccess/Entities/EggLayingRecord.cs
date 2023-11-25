@@ -2,9 +2,8 @@
 
 namespace ChickenFarmApi.DataAccess.Entities
 {
-    public class EggLayingRecord
+    public class EggLayingRecord : Chicken
     {
-
         [Key]
         public int Id { get; set; }
 
@@ -13,5 +12,12 @@ namespace ChickenFarmApi.DataAccess.Entities
         public int Month { get; set; }
 
         public int EggCount { get; set; }
+
+        public int ChickenId { get; set; }
+
+        // Navigation property to represent the associated chicken
+        public required Chicken Chicken { get; set; }
+
+
     }
 }
