@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChickenFarmApi.DataAccess.Migrations
 {
-    [DbContext(typeof(EggLayingContext))]
+    [DbContext(typeof(ChickenFarmContext))]
     [Migration("20231125063228_InitialCreate")]
     partial class InitialCreate
     {

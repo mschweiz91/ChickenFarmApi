@@ -3,6 +3,7 @@ using System;
 using ChickenFarmApi.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChickenFarmApi.DataAccess.Migrations
 {
     [DbContext(typeof(ChickenFarmContext))]
-    partial class EggLayingContextModelSnapshot : ModelSnapshot
+    [Migration("20231126223936_AddEggLayingRecordForeignKey")]
+    partial class AddEggLayingRecordForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.14");

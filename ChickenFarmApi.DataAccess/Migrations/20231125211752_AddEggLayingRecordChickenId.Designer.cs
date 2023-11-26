@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChickenFarmApi.DataAccess.Migrations
 {
-    [DbContext(typeof(EggLayingContext))]
+    [DbContext(typeof(ChickenFarmContext))]
     [Migration("20231125211752_AddEggLayingRecordChickenId")]
     partial class AddEggLayingRecordChickenId
     {

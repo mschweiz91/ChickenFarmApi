@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ChickenFarmApi.DataAccess.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ChickenFarmApi.DataAccess.Entities
+namespace ChickenFarmApi.Models
 {
-    public class EggLayingRecord 
+    public class EggLayingRecordModel 
     {
         [Key]
         public Guid RecordId { get; set; }
@@ -14,17 +15,17 @@ namespace ChickenFarmApi.DataAccess.Entities
 
         public int EggCount { get; set; }
 
-
         // Foreign key to represent the associated chicken
         public int ChickenId { get; set; }
         public string? Name { get; set; }
 
         // Navigation property to represent the associated chicken
         [ForeignKey("ChickenId")]
-        public Chicken Chicken { get; set; }
+        public ChickenModel Chicken { get; set; }
 
         
-                       
+
+       
 
 
     }

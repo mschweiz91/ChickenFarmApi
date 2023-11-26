@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ChickenFarmApi.DataAccess.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace ChickenFarmApi.DataAccess.Entities
+namespace ChickenFarmApi.Models
 {
-    public class Chicken
+    public class ChickenModel
     {
         [Key]
         public int ChickenId { get; set; }

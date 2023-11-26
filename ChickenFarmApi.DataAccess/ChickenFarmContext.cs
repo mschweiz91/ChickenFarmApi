@@ -3,15 +3,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChickenFarmApi.DataAccess
 {
-    public class EggLayingContext : DbContext
+    public class ChickenFarmContext : DbContext
     {
         private string DBPath {  get; set; }
 
-        public DbSet <Chicken> Chickens { get; set; }
+        public DbSet<Chicken> Chickens { get; set; }
 
         public DbSet<EggLayingRecord> EggLayingRecords { get; set; }
 
-        public EggLayingContext() 
+
+        
+        public ChickenFarmContext() 
         {
             DBPath = Path
                .Join(Environment
@@ -23,6 +25,18 @@ namespace ChickenFarmApi.DataAccess
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlite($"Filename={DBPath}");
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EggLayingRecord>()
+                .HasOne(e => e.Chicken)
+                .WithMany(c => c.EggLayingRecords)
+                .HasForeignKey(e => e.ChickenId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+       
 
     }
 }
