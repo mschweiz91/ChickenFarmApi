@@ -26,25 +26,25 @@ namespace ChickenFarmApi.Controllers
         //Create method to add a chicken
         [HttpPost]
 
-        public async Task<ActionResult<ChickenModel>> Add(ChickenModel chicken, CancellationToken token)
+        public async Task<ActionResult<ChickenModel>> Add(string Name, CancellationToken token)
         {
             Chicken chickenNew = new()
-            {
-                ChickenId = chicken.ChickenId,
-                Name = chicken.Name
+            {                
+                Name = Name
             };
 
             await _dbContext.Chickens.AddAsync(chickenNew, token);
             await _dbContext.SaveChangesAsync(token);
 
-            chicken.ChickenId = chickenNew.ChickenId;
+            
+            Name = chickenNew.Name;
 
-            return Ok(chicken);
+            return Ok(chickenNew);
         }
 
 
         //Read method to retrieve data on a specific chicken
-        [HttpGet("{chickenid}")]
+        [HttpGet("{chickenId}")]
         public async Task<ActionResult<ChickenModel>> GetChicken(int chickenId, CancellationToken token)
         {
             Chicken? chicken = await _dbContext.Chickens.FindAsync(new object[] { chickenId }, token);
@@ -57,7 +57,8 @@ namespace ChickenFarmApi.Controllers
             ChickenModel Chicken = new()
             {
                 ChickenId = chicken.ChickenId,
-                Name = chicken.Name
+                Name = chicken.Name,
+                
             };
 
             return Ok(Chicken);
@@ -86,19 +87,18 @@ namespace ChickenFarmApi.Controllers
         }
                 
 
-        //Update method to update a specific chicken's data
-        [HttpPatch("{chickenid}")]
-        public async Task<ActionResult<ChickenModel>> ChickenUpdate(ChickenModel chicken)
+        //Update method to update a specific chicken's name
+        [HttpPatch]
+        public async Task<ActionResult<ChickenModel>> ChickenUpdate(int chickenId, string Name)
         {
-            Chicken? chickenUpdate = await _dbContext.Chickens.FindAsync(chicken.ChickenId);
+            Chicken? chickenUpdate = await _dbContext.Chickens.FindAsync(chickenId);
 
             if (chickenUpdate == null)
             {
                 return NotFound();
             }
-
-            chickenUpdate.ChickenId = chicken.ChickenId;
-            chickenUpdate.Name = chicken.Name;
+                        
+            chickenUpdate.Name = Name;
             await _dbContext.SaveChangesAsync();
 
             return new ChickenModel
@@ -111,7 +111,7 @@ namespace ChickenFarmApi.Controllers
         }
 
         //Delete method to delete a chicken
-        [HttpDelete("{chickenid}")]
+        [HttpDelete("{chickenId}")]
         public async Task<ActionResult> Delete(int chickenId)
         {
             Chicken? chickenToDelete = await _dbContext.Chickens.FindAsync(chickenId);

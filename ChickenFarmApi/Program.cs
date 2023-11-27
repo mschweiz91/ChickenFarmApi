@@ -23,18 +23,15 @@ namespace ChickenFarmApi
 
             void SeedDatabase()
             {
-                using (var scope = app.Services.CreateScope())
+                using var scope = app.Services.CreateScope();
+                try
                 {
-                    try
-                    {
-                        var scopedContext = scope.ServiceProvider.GetRequiredService<ChickenFarmContext>();
-                        Seeder.SeedData(scopedContext);
-                    }
-                    catch
-                    {
-                        throw;
-                    }
-
+                    var scopedContext = scope.ServiceProvider.GetRequiredService<ChickenFarmContext>();
+                    Seeder.SeedData(scopedContext);
+                }
+                catch
+                {
+                    throw;
                 }
             }
 
