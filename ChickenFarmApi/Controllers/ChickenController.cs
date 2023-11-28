@@ -36,8 +36,8 @@ namespace ChickenFarmApi.Controllers
             await _dbContext.Chickens.AddAsync(chickenNew, token);
             await _dbContext.SaveChangesAsync(token);
 
-            
-            Name = chickenNew.Name;
+            //ChickenId = chickenNew.ChickenId;
+            //Name = chickenNew.Name;
 
             return Ok(chickenNew);
         }
