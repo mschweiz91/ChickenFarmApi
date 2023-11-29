@@ -1,11 +1,8 @@
 ﻿using ChickenFarmApi.DataAccess;
 using ChickenFarmApi.DataAccess.Entities;
 using ChickenFarmApi.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Xml.Linq;
 
 namespace ChickenFarmApi.Controllers
 {
@@ -21,14 +18,21 @@ namespace ChickenFarmApi.Controllers
             _dbContext.Database.EnsureCreated();
 
         }
-
-        //Create method to add an egg laying record to a specific chicken in a specific month & year
+        
+        /// <summary>
+        /// Create new Egg Laying Record
+        /// </summary>
+        /// <param name="ChickenId">Id of the Chicken</param>
+        /// <param name="Year">Year of the new Record</param>
+        /// <param name="Month">Month of the new Record</param>
+        /// <param name="EggCount">Egg Count of the new Record</param>        
+        /// <returns>Newly created Egg Laying Record</returns>
         [HttpPost]
         public async Task<ActionResult<EggLayingRecordModel>> AddEggRecord(int ChickenId, int Year, int Month, int EggCount, CancellationToken token)
         {
             EggLayingRecord recordNew = new()
             {
-                ChickenId = ChickenId,            
+                ChickenId = ChickenId,
                 Year = Year,
                 Month = Month,
                 EggCount = EggCount
@@ -40,31 +44,30 @@ namespace ChickenFarmApi.Controllers
             //RecordId = recordNew.RecordId;
 
             return Ok(recordNew);
-
-
-
-          
         }
-
-        //Read method to retrieve the egg laying records for a specific chicken
+        
+        /// <summary>
+        /// Get Egg Laying Records for a Chicken
+        /// </summary>
+        /// <param name="chickenId">Id of the Chicken</param>        
+        /// <returns>All Egg Laying Records of the specified Chicken</returns>
         [HttpGet("{chickenId}")]
         public async Task<ActionResult<IEnumerable<EggLayingRecordModel>>> GetEggRecords(int chickenId, CancellationToken token)
         {
-                        
+
             var eggLayingRecords = await _dbContext.EggLayingRecords
                 .Where(r => r.ChickenId == chickenId)
                 .Include(r => r.Chicken)
-                .Select(r => new                    
-                            
-            {
-                r.ChickenId,
-                r.RecordId,
-                ChickenName = r.Chicken.Name,
-                r.Year,
-                r.Month,
-                r.EggCount
+                .Select(r => new
+                {
+                    r.ChickenId,
+                    r.RecordId,
+                    ChickenName = r.Chicken.Name,
+                    r.Year,
+                    r.Month,
+                    r.EggCount
 
-            })
+                })
                 .ToListAsync(token);
 
             if (eggLayingRecords == null)
@@ -74,8 +77,13 @@ namespace ChickenFarmApi.Controllers
 
             return Ok(eggLayingRecords);
         }
-
-        //Read method to get a record of total eggs layed in a given year & month by all chickens
+        
+        /// <summary>
+        /// Get Sum Total for Eggs in a given Year and Month
+        /// </summary>
+        /// <param name="year">Year of the Record</param>
+        /// <param name="month">Month of the Record</param>
+        /// <returns>Sum Total for Eggs laid by all Chickens in a given Year and Month</returns>
         [HttpGet("eggtotal")]
         public async Task<ActionResult<int>> GetSumOfEggs(int year, int month)
         {
@@ -85,24 +93,26 @@ namespace ChickenFarmApi.Controllers
 
             return Ok($"Total eggs laid: " + sum);
         }
-
-        //Read method to get a list of all egg laying records
+        
+        /// <summary>
+        /// Get List of All Egg Laying Records
+        /// </summary>        
+        /// <returns>List of All Egg Laying Records</returns>
         [HttpGet("allrecords")]
         public async Task<ActionResult<IEnumerable<EggLayingRecordModel>>> GetAllEggRecords(CancellationToken token = default)
         {
-            
+
             var eggLayingRecords = await _dbContext.EggLayingRecords
                 .Include(r => r.Chicken) //Inlcudes the related Chicken entity
                 .Select(r => new
-                      {
-                          r.ChickenId,
-                          r.RecordId,
-                          ChickenName = r.Chicken.Name, //Includes the Name property of the related Chicken
-                          r.Year,
-                          r.Month,
-                          r.EggCount
-                      })
-
+                {
+                    r.ChickenId,
+                    r.RecordId,
+                    ChickenName = r.Chicken.Name, //Includes the Name property of the related Chicken
+                    r.Year,
+                    r.Month,
+                    r.EggCount
+                })
                 .ToListAsync(token);
 
             if (eggLayingRecords == null)
@@ -112,12 +122,19 @@ namespace ChickenFarmApi.Controllers
 
             return Ok(eggLayingRecords);
         }
-
-        //Update method to update an egg laying record of a chicken
+        
+        /// <summary>
+        /// Update an Egg Laying Record
+        /// </summary>
+        /// <param name="recordId">RecordId</param>
+        /// <param name="EggCount">Egg Count to Update</param>
+        /// <param name="Year">Year to Update</param>
+        /// <param name="Month">Month to Update</param>
+        /// <returns>Updated Egg Laying Record</returns>
         [HttpPatch]
-        public async Task<ActionResult<EggLayingRecordModel>> UpdateEggRecord(int recordId, int Year, int Month, int EggCount)
+        public async Task<ActionResult<EggLayingRecordModel>> UpdateEggRecord(int recordId, int EggCount, int? Year = null, int? Month = null)
         {
-           
+
             EggLayingRecord? updatedRecord = await _dbContext.EggLayingRecords
                 .Include(r => r.Chicken) //Includes the related Chicken entity
                 .FirstOrDefaultAsync(r => r.RecordId == recordId);
@@ -127,26 +144,35 @@ namespace ChickenFarmApi.Controllers
                 return NotFound($"Egg laying record with Id {recordId} could not be found");
             }
 
-            updatedRecord.Year = Year;
-            updatedRecord.Month = Month;
+            if (Year != null)
+            {
+                updatedRecord.Year = Year.Value;
+            }
+
+            if (Month != null)
+            {
+                updatedRecord.Month = Month.Value;
+            }
+
             updatedRecord.EggCount = EggCount;
             await _dbContext.SaveChangesAsync();
 
             return new EggLayingRecordModel
             {
                 ChickenId = updatedRecord.ChickenId,
-                RecordId =updatedRecord.RecordId,
+                RecordId = updatedRecord.RecordId,
                 Name = updatedRecord.Chicken.Name,
                 Year = updatedRecord.Year,
                 Month = updatedRecord.Month,
                 EggCount = updatedRecord.EggCount
-        };
-
-            
-            
+            };
         }
-
-        //Delete method to delete an egg laying record of a chicken
+        
+        /// <summary>
+        /// Delete an Egg Laying Record
+        /// </summary>
+        /// <param name="recordId">RecordId</param>
+        /// <returns>Egg Laying Record successfully deleted</returns>
         [HttpDelete("{recordId}")]
         public async Task<ActionResult> Delete(int recordId)
         {

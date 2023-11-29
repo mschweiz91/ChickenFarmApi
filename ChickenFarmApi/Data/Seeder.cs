@@ -1,5 +1,5 @@
-﻿using ChickenFarmApi.DataAccess.Entities;
-using ChickenFarmApi.DataAccess;
+﻿using ChickenFarmApi.DataAccess;
+using ChickenFarmApi.DataAccess.Entities;
 
 namespace ChickenFarmApi.Data
 {

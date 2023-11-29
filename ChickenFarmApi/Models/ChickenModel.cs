@@ -1,5 +1,4 @@
-﻿using ChickenFarmApi.DataAccess.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace ChickenFarmApi.Models

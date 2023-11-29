@@ -5,15 +5,15 @@ namespace ChickenFarmApi.DataAccess
 {
     public class ChickenFarmContext : DbContext
     {
-        private string DBPath {  get; set; }
+        private string DBPath { get; set; }
 
         public DbSet<Chicken> Chickens { get; set; }
 
         public DbSet<EggLayingRecord> EggLayingRecords { get; set; }
 
 
-        
-        public ChickenFarmContext() 
+
+        public ChickenFarmContext()
         {
             DBPath = Path
                .Join(Environment
@@ -36,7 +36,7 @@ namespace ChickenFarmApi.DataAccess
             base.OnModelCreating(modelBuilder);
         }
 
-       
+
 
     }
 }

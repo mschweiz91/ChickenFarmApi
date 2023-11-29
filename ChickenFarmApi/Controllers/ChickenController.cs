@@ -1,11 +1,8 @@
 ﻿using ChickenFarmApi.DataAccess;
-using ChickenFarmApi.Models;
 using ChickenFarmApi.DataAccess.Entities;
+using ChickenFarmApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
-using System;
-using ChickenFarmApi.DataAccess.Migrations;
 
 namespace ChickenFarmApi.Controllers
 {
@@ -13,37 +10,39 @@ namespace ChickenFarmApi.Controllers
     [ApiController]
     public class ChickenController : ControllerBase
     {
-
         private readonly ChickenFarmContext _dbContext;
 
         public ChickenController(ChickenFarmContext dbcontext)
         {
             _dbContext = dbcontext;
             _dbContext.Database.EnsureCreated();
-
         }
 
-        //Create method to add a chicken
+        /// <summary>
+        /// Add a Chicken
+        /// </summary>
+        /// <param name="Name">The name of the Chicken</param>        
+        /// <returns>The newly created Chicken</returns>
         [HttpPost]
 
         public async Task<ActionResult<ChickenModel>> Add(string Name, CancellationToken token)
         {
             Chicken chickenNew = new()
-            {                
+            {
                 Name = Name
             };
 
             await _dbContext.Chickens.AddAsync(chickenNew, token);
             await _dbContext.SaveChangesAsync(token);
 
-            //ChickenId = chickenNew.ChickenId;
-            //Name = chickenNew.Name;
-
             return Ok(chickenNew);
         }
 
-
-        //Read method to retrieve data on a specific chicken
+        /// <summary>
+        /// Look up a Chicken by its Id
+        /// </summary>
+        /// <param name="chickenId">The Id of the Chicken</param>        
+        /// <returns>Id and Name of a Chicken</returns>
         [HttpGet("{chickenId}")]
         public async Task<ActionResult<ChickenModel>> GetChicken(int chickenId, CancellationToken token)
         {
@@ -58,19 +57,21 @@ namespace ChickenFarmApi.Controllers
             {
                 ChickenId = chicken.ChickenId,
                 Name = chicken.Name,
-                
             };
 
             return Ok(Chicken);
         }
-
-        //Read method to get a list of all chickens
+        
+        /// <summary>
+        /// Get List of all Chickens in the database
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>Id and Name of all Chickens in the database</returns>
         [HttpGet("allchickens")]
 
         public async Task<ActionResult<IEnumerable<ChickenModel>>> GetAllChickens(CancellationToken token = default)
         {
             IQueryable<Chicken> Chickens = _dbContext.Chickens;
-
 
             IEnumerable<ChickenModel> chickens = await Chickens
                 .Select(chickens => new ChickenModel
@@ -82,12 +83,14 @@ namespace ChickenFarmApi.Controllers
                 .ToListAsync(token);
 
             return Ok(chickens);
-
-            
         }
-                
-
-        //Update method to update a specific chicken's name
+        
+        /// <summary>
+        /// Update a Chicken's Name
+        /// </summary>
+        /// <param name="chickenId">The Id of the Chicken you wish to update</param>
+        /// <param name="Name">The Updated Name of the Chicken</param>
+        /// <returns>Id and updated Name of a Chicken</returns>
         [HttpPatch]
         public async Task<ActionResult<ChickenModel>> ChickenUpdate(int chickenId, string Name)
         {
@@ -97,7 +100,7 @@ namespace ChickenFarmApi.Controllers
             {
                 return NotFound();
             }
-                        
+
             chickenUpdate.Name = Name;
             await _dbContext.SaveChangesAsync();
 
@@ -106,11 +109,13 @@ namespace ChickenFarmApi.Controllers
                 ChickenId = chickenUpdate.ChickenId,
                 Name = chickenUpdate.Name,
             };
-                       
-
         }
-
-        //Delete method to delete a chicken
+        
+        /// <summary>
+        /// Delete a Chicken
+        /// </summary>
+        /// <param name="chickenId">Id of the Chicken to remove</param>
+        /// <returns>Chicken successfully deleted</returns>
         [HttpDelete("{chickenId}")]
         public async Task<ActionResult> Delete(int chickenId)
         {

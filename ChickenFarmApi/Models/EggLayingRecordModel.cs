@@ -1,11 +1,10 @@
-﻿using ChickenFarmApi.DataAccess.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ChickenFarmApi.Models
 {
-    public class EggLayingRecordModel 
+    public class EggLayingRecordModel
     {
         [Key]
         public int RecordId { get; set; }
@@ -27,11 +26,11 @@ namespace ChickenFarmApi.Models
         public int ChickenId { get; set; }
         public string? Name { get; set; }
 
-        
 
-        
 
-       
+
+
+
 
 
     }

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace ChickenFarmApi.DataAccess.Entities
 {
-    public class EggLayingRecord 
+    public class EggLayingRecord
     {
         [Key]
         public int RecordId { get; set; }
@@ -26,13 +26,13 @@ namespace ChickenFarmApi.DataAccess.Entities
 
         //public Chicken Chicken { get; set; }
         public int ChickenId { get; set; }
-                
+
         public string? Name { get; set; }
 
-        
 
-        
-                       
+
+
+
 
 
     }
