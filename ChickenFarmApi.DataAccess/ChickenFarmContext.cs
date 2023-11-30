@@ -1,5 +1,6 @@
 ﻿using ChickenFarmApi.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal;
 
 namespace ChickenFarmApi.DataAccess
 {
@@ -10,9 +11,7 @@ namespace ChickenFarmApi.DataAccess
         public DbSet<Chicken> Chickens { get; set; }
 
         public DbSet<EggLayingRecord> EggLayingRecords { get; set; }
-
-
-
+       
         public ChickenFarmContext()
         {
             DBPath = Path
@@ -32,11 +31,9 @@ namespace ChickenFarmApi.DataAccess
                 .WithMany(c => c.EggLayingRecords)
                 .HasForeignKey(e => e.ChickenId)
                 .OnDelete(DeleteBehavior.Cascade);
+               
 
             base.OnModelCreating(modelBuilder);
-        }
-
-
-
+        }        
     }
 }

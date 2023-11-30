@@ -63,10 +63,10 @@ namespace ChickenFarmApi.Controllers
         }
         
         /// <summary>
-        /// Get List of all Chickens in the database
+        /// Get List of all Chickens
         /// </summary>
         /// <param name="token"></param>
-        /// <returns>Id and Name of all Chickens in the database</returns>
+        /// <returns>Id and Name of all Chickens</returns>
         [HttpGet("allchickens")]
 
         public async Task<ActionResult<IEnumerable<ChickenModel>>> GetAllChickens(CancellationToken token = default)

@@ -28,12 +28,5 @@ namespace ChickenFarmApi.DataAccess.Entities
         public int ChickenId { get; set; }
 
         public string? Name { get; set; }
-
-
-
-
-
-
-
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChickenFarmApi.DataAccess.Migrations
 {
     [DbContext(typeof(ChickenFarmContext))]
-    [Migration("20231127225604_Initial")]
-    partial class Initial
+    [Migration("20231130045229_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
