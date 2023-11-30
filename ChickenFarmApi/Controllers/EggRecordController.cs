@@ -103,7 +103,7 @@ namespace ChickenFarmApi.Controllers
         {
 
             var eggLayingRecords = await _dbContext.EggLayingRecords
-                .Include(r => r.Chicken) //Inlcudes the related Chicken entity
+                .Include(r => r.Chicken) //Includes the related Chicken entity
                 .Select(r => new
                 {
                     r.ChickenId,
