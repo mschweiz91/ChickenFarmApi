@@ -1,6 +1,6 @@
 # ChickenFarmApi
 
-The Chicken Farm API is a web application that allows users to track and maintain egg laying records for chickens on a farm. It provides a RESTful API for managing chickens and their egg laying history. The Chicken Farm API also includes seeded data for 5 chickens and 2 egg laying records per chicken.   
+The Chicken Farm API is a web application that allows users to create, track, maintain, and delete egg laying records for chickens on a farm. It provides a RESTful API for managing chickens and their egg laying history. The Chicken Farm API also includes seeded data for 5 chickens and 2 egg laying records per chicken.   
 
 ## Notes and Instructions:
 
