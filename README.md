@@ -2,6 +2,7 @@
 
 The Chicken Farm API is a web application that allows users to create, track, maintain, and delete egg laying records for chickens on a farm. It provides a RESTful API for managing chickens and their egg laying history. The Chicken Farm API also includes seeded data for 5 chickens and 2 egg laying records per chicken.   
 
+
 ## Notes and Instructions:
 
 This program was created using Visual Studio 2022 and .NET 7.0
@@ -20,7 +21,9 @@ This program was created using Visual Studio 2022 and .NET 7.0
 
 *Right click on the Solution and click "Build Solution" 
 
-#### Then Run the Solution and interact with the API through Swagger.
+#### Then Run the Solution and interact with the API through Swagger. 
+In Swagger you should see two sections, Chicken and Egg Record, each with their own Post, Get, Patch, and Delete functions. 
+
 
 ### The following features included in this project are:
 
